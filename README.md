@@ -10,16 +10,16 @@ GeoJSONh as many advantages: it is well supported, simple to understand and huma
 
 **But it is awfully inefficient for data storage and transfer.**
 
-If you're Using large data sets, you know what I mean. GeoJSON is redondant (each keys are repeated on each features) and geometry are represented as a sequence of coordinates that may have up to 10-12 characters...
-If you want to spare disk space, bandwidth and transfer time.
+If you're Using large data sets, you know what I mean. GeoJSON is redundant (each keys are repeated on each features) and geometry are represented as a sequence of coordinates that may have up to 10-12 characters...
+Simple tricks may help to make GeoJSON files smaller, like removal of whitespaces and newlines, rounding and filtering coordinates or simplifying property keys. But there’s more we can do to achieve even better results.
 
-[Binary format](https://github.com/mapbox/geobuf) could be a good alternative, but I wanted a format I can extend easily and include in an other JSON structure (such as a map). 
+If you want to spare disk space, bandwidth and transfer time this is made for you.
 
-Simple tricks may help to make GeoJSON files smaller, like removal of whitespaces and newlines, rounding and filtering coordinates. But there’s more we can do to achieve even better results.
+Binary format as [GeoBuff](https://github.com/mapbox/geobuf) or [MessagePack](https://github.com/msgpack/msgpack-javascript) could be a good alternative, but I wanted a format I can extend easily and include in an other JSON structure (such as a map). 
 
 ## Dealing with coordinates
 
-
+I first look at [Encoded Polyline Algorithm Format](https://developers.google.com/maps/documentation/utilities/polylinealgorithm) to encode the geometry but the precision limit to 5 digit (6 in better cases) onl gives you 10cm of precision.
 
 
 ## More to read
