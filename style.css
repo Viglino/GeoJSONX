@@ -1,0 +1,264 @@
+body {
+  position: relative;
+  max-width: 800px;
+  margin: 0.5em auto;
+  background: #ddc;
+  font-family: Arial,Helvetica,Verdana,sans-serif;
+  color: #775;
+}
+h1, h2 {
+  letter-spacing: -.06em;
+  transform: scaleX(.9);
+  font-size: 2em;
+}
+h1 {
+  position: absolute;
+  text-align: center;
+  font-size: 2em;
+  margin: 0;
+  top: 2.2em;
+  left: 75%;
+  transform: translate(-50%, -50%) scaleX(.7);
+  background-color: #775;
+  border-radius: 1.6em / 1em;
+  color: #fff;
+  padding: .3em 1.5em;
+  border: .2em solid #fff;
+}
+
+#dropfile	{
+  font-size: 1.2em;
+  width: Calc(50% - 2em); 
+  border: 3px dashed #997; 
+  padding: 1em 3.5em;
+  text-align:center;
+  box-sizing: border-box;
+  margin: 1em 0 1em 2em;
+  font-weight: bold;
+  border-radius: .5em;
+  box-sizing: border-box;
+}
+#dropfile.hover{
+  border-color: #664;
+  background: #e6e6d6;
+}
+
+#loading {
+  font-weight: bold;
+  margin:0 0 1em;
+  padding:0.5em;
+  height:1em;
+}
+.warn {
+  background: #fe0;
+  color: #800;
+  padding: 0 1em;
+}
+body.isloading > .options > *,
+body.isloading > * {
+  opacity: .5;
+}
+body.isloading > .options #loading,
+body.isloading > .options {
+  opacity: 1;
+}
+
+ul {
+  list-style: none;
+}
+#result {
+  background-color: #fff;
+  padding: 1em 2em;
+}
+#result li {
+  background-color: #eee;
+  padding: 1em;
+  border: 1px solid #aaa;
+}
+#result li span.name {
+  font-weight: bold;
+  width: 25%;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  display: inline-block;
+  vertical-align: middle;
+}
+#result li span.size {
+  display: inline-block;
+  min-width: 4em;
+}
+#result li span.size:nth-child(2) {
+  text-align: right;
+}
+@media screen and (max-width: 750px) {
+  #result li span.size {
+    display: none;
+  }
+}
+#result .percent {
+  font-weight: bold;
+  float: right;
+  min-width: 3em;
+  text-align: right;
+}
+#result .gauge {
+  position: relative;
+  display: inline-block;
+  width: 20%;
+  border: 1px solid #aaa;
+  margin: 0 .5em;
+}
+#result .gauge > div {
+  display: inline-block;
+  height: 1em;
+  max-width: 100%;
+  background-color: #ddc;
+  width: 0;
+  transition: 1s;
+  vertical-align: middle;
+}
+button {
+  float: right;
+  font-size: 1em;
+  background-color: #775;
+  border-radius: 1.2em;
+  color: #fff;
+  border: .2em solid #fff;
+  padding: .4em 1.2em;
+  margin-top: -.5em;
+}
+button:before  {
+  content: "\f019";
+  font-family: FontAwesome;
+  margin-right: .3em;
+}
+
+#info {
+  background-color: #fff;
+  padding: .5em 1.5em;
+}
+#info h2 {
+  text-align: center;
+  font-weight: normal;
+}
+
+/* github corner */
+a.icss-github-corner,
+a.icss-github-corner-left {
+  font-size: 2.5em;
+  position: fixed;
+  top:0;
+  right: 0;
+  z-index: 1000;
+  color: #fff;
+  background-color: #333;
+  padding: .5em 2em 0;
+  text-align: center;
+  -webkit-transform: rotate(45deg);
+      -ms-transform: rotate(45deg);
+          transform: rotate(45deg);
+  -webkit-transform-origin: 3.9em 3em;
+      -ms-transform-origin: 3.9em 3em;
+          transform-origin: 3.9em 3em;
+  overflow: hidden;
+}
+a.icss-github-corner-left {
+  left: 0;
+  right: auto;
+  -webkit-transform: rotate(-45deg);
+      -ms-transform: rotate(-45deg);
+          transform: rotate(-45deg);
+  -webkit-transform-origin: 1em 3.1em;
+      -ms-transform-origin: 1em 3.1em;
+          transform-origin: 1em 3.1em;
+}
+a.icss-github-corner:hover i,
+a.icss-github-corner-left:hover i{
+  -webkit-animation: vertical 2s ease;
+          animation: vertical 2s ease;
+}
+
+a.icss-github-corner i,
+a.icss-github-corner-left i,
+i.icss-github-corner {
+  color: #fff;
+  position: relative;
+  display:inline-block;
+  font-style: normal;
+  background-color:currentColor;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  vertical-align: middle;
+  width: .8em;
+  height: .6em;
+  -webkit-border-radius: 45% 45% 45% 45% / 50%;
+          border-radius: 45% 45% 45% 45% / 50%;
+  background-color: currentColor;
+  -webkit-box-shadow: 0 .35em 0 -.2em, 
+      0 .38em 0 -.2em,
+      0 .41em 0 -.2em,
+      0 .44em 0 -.2em,
+      0 .47em 0 -.2em;
+          box-shadow: 0 .35em 0 -.2em, 
+      0 .38em 0 -.2em,
+      0 .41em 0 -.2em,
+      0 .44em 0 -.2em,
+      0 .47em 0 -.2em;
+  margin: .12em .1em .23em;
+}
+a.icss-github-corner i:before,
+a.icss-github-corner-left i:before,
+i.icss-github-corner:before {
+  content: "";
+  border-width: 0; 
+  position: absolute;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  border-width: .15em .15em;
+  border-style: solid;
+  -webkit-border-radius: 0.02em 60% 100% 80%;
+          border-radius: 0.02em 60% 100% 80%;
+  left: 0;
+  top: -.07em;
+  -webkit-transform: rotate(20deg);
+      -ms-transform: rotate(20deg);
+          transform: rotate(20deg);
+}
+a.icss-github-corner i:after,
+a.icss-github-corner-left i:after,
+i.icss-github-corner:after {
+  content: "";
+  border-width: 0; 
+  position: absolute;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  border-width: .15em .15em;
+  border-style: solid;
+  -webkit-border-radius: 0.02em 80% 100% 60%;
+          border-radius: 0.02em 80% 100% 60%;
+  left: .5em;
+  top: -.07em;
+  -webkit-transform: rotate(65deg);
+      -ms-transform: rotate(65deg);
+          transform: rotate(65deg);
+}
+@-webkit-keyframes vertical {
+	0%{-webkit-transform:translate(0,-3px);transform:translate(0,-3px)}
+	4%{-webkit-transform:translate(0,3px);transform:translate(0,3px)}
+	8%{-webkit-transform:translate(0,-3px);transform:translate(0,-3px)}
+	12%{-webkit-transform:translate(0,3px);transform:translate(0,3px)}
+	16%{-webkit-transform:translate(0,-3px);transform:translate(0,-3px)}
+	20%{-webkit-transform:translate(0,3px);transform:translate(0,3px)}
+	22%,100%{-webkit-transform:translate(0,0);transform:translate(0,0)}
+}
+@keyframes vertical {
+	0%{-webkit-transform:translate(0,-3px);transform:translate(0,-3px)}
+	4%{-webkit-transform:translate(0,3px);transform:translate(0,3px)}
+	8%{-webkit-transform:translate(0,-3px);transform:translate(0,-3px)}
+	12%{-webkit-transform:translate(0,3px);transform:translate(0,3px)}
+	16%{-webkit-transform:translate(0,-3px);transform:translate(0,-3px)}
+	20%{-webkit-transform:translate(0,3px);transform:translate(0,3px)}
+	22%,100%{-webkit-transform:translate(0,0);transform:translate(0,0)}
+}
+/**/

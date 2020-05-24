@@ -1,0 +1,149 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+  <title>GeoJSONX</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+  <meta name="description" content="Compress GeoJSON file." />
+  <meta name="keywords" content="geojson, compress, minify" />
+
+  <!-- geojsonx -->
+  <script type="text/javascript" src="./geojsonx.js"></script>
+
+  <!-- filesaver-js -->
+  <script type="text/javascript" src="https://cdn.rawgit.com/eligrey/FileSaver.js/aa9f4e0e/FileSaver.min.js"></script>
+
+  <!-- FontAwesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="./style.css" />
+
+</head>
+<body >
+  <a href="https://github.com/Viglino/GeoJSONX" class="icss-github-corner"><i></i></a>
+
+  <h1>GeoJSONX</h1>
+  <div id="dropfile">
+    <i class="fa fa-download fa-3x"></i>
+    <br/>
+    Drop your GeoJSON / GeoJSONX file here!
+  </div>
+
+  <div class="options">
+    <p>Options:</p>
+    <ul>
+      <li>
+        <label>Decimals:</label>
+        <input id="decimals" type="number" value="7" min="0" max="20" />
+      </li>
+      <li>
+        <label>Remove null properties:
+          <input id="nonull" type="checkbox" checked="checked" />
+        </label>
+      </li>
+    </ul>
+  
+    <p>Result:</p>
+    <ul id="result"></ul>
+    <div id="loading"></div>
+    
+    <div id="info">
+      <h2><b>Speed</b> up your <b>maps</b>!</h2>
+      <p>
+        <b>GeoJSON</b> is a well known, human readable format use for manipulating 
+        and visualizing geospatial data on the web.
+      </p>
+      <p>
+        But if is well supported by major mapping libraries like <a href="https://leafletjs.com/">Leaflet</a> 
+        or <a href="https://openlayers.org/">Openlayers</a> it is awfully inefficient when it comes 
+        to storing data.
+        <br/>
+        Many technics can be find to minify GeoJSON, removing non-significant whitespace,
+        reducing the number of decimals used for coordinates or simplifying property keys.
+        <br/>
+        Such tehnics are l
+      </p>
+    </div>
+  </div>
+
+<script>
+  var fileName, fileSize, currentJSON;
+  var result = [];
+
+  /* Save file */
+  function download(i) {
+    var json = result[i];
+    var format = (json.features[0].geometry) ? 'geojson' : 'geojsonx';
+    var blob = new Blob([JSON.stringify(json)], {type: 'text/plain;charset=utf-8'});
+    saveAs(blob, fileName+'.'+format);
+  }
+
+  /* Handle drag and drop */
+  document.addEventListener('dragover', function (e) {
+    e.preventDefault();
+    e.stopPropagation();
+    document.getElementById('dropfile').className = 'hover';
+    return false;
+  });
+  document.addEventListener('dragleave', function (e) {
+    e.preventDefault();
+    e.stopPropagation();
+    document.getElementById('dropfile').className = '';
+    return false;
+  });
+
+  document.addEventListener('drop', function (e) {
+    e.preventDefault();
+    e.stopPropagation();
+
+    if (e.dataTransfer.files.length) {
+      document.getElementById('dropfile').className = '';
+      document.body.className = 'isloading';
+      document.getElementById('loading').innerHTML = 'loading...';
+      // Main function to upload
+      var file = e.dataTransfer.files[0];
+      fileName = file.name.replace(/\..+$/, '');
+      fileSize = Math.round(file.size/1024);
+      var reader = new FileReader();
+      reader.onload = function(event) {
+        try {
+          currentSON = JSON.parse(reader.result);
+          handleJSON(currentSON);
+        } catch(e) {
+          document.getElementById('loading').innerHTML = '<span class="warn">Bad JSON file...</span>';
+        }
+        document.body.className = '';
+      }
+      reader.readAsText(file);
+    }
+    return false;
+  });
+
+  function handleJSON(json) {
+    var options = {
+      decimals: parseInt(document.getElementById('decimals').value) || 7,
+      deleteNullProperties: document.getElementById('nonull').checked
+    }
+    var r = GeoJSONX.parse(json, options);
+    if (r) {
+      console.log(r);
+      result.push(r);
+      var size = Math.round(JSON.stringify(r).length / 1024);
+      document.getElementById('loading').innerHTML = '';
+      var ul = document.getElementById('result');
+      var li = document.createElement('LI');
+      li.innerHTML = '<span class="name">'+fileName+'</span> '
+        + '<span class="size">'+ fileSize +' Ko</span>'
+        + '<div class="gauge"><div></div></div>'
+        + '<span class="size">'+ size +' Ko</span>'
+        + '<span class="percent">'+ Math.round((size-fileSize)/fileSize*100) +'%</span>'
+        +'<button onclick="download('+(result.length-1)+')">Donwnload</button>';
+      ul.appendChild(li);
+      li.querySelector('.gauge div').style.width = 100+Math.round((size-fileSize)/fileSize*100)+'%';
+    } else {
+      document.getElementById('loading').innerHTML = '<span class="warn">Error while parsing...</span>';
+    }
+  }
+
+</script>
+</body>
+</html>

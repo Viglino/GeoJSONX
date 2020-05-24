@@ -1,0 +1,21 @@
+{
+  "name": "geojsonx",
+  "version": "1.0.0",
+  "description": "Compressed GeoJSON format",
+  "main": "geojson.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node serve.js"
+  },
+  "keywords": [
+    "geojson",
+    "map",
+    "compress",
+    "minify"
+  ],
+  "author": "viglino",
+  "license": "MIT",
+  "devDependencies": {
+    "live-server": "^1.2.1"
+  }
+}
