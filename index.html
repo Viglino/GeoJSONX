@@ -33,7 +33,7 @@
     <ul>
       <li>
         <label>Decimals:</label>
-        <input id="decimals" type="number" value="7" min="0" max="20" />
+        <input id="decimals" type="number" value="6" min="0" max="20" />
       </li>
       <li>
         <label>Remove null properties:
@@ -109,7 +109,7 @@
           currentSON = JSON.parse(reader.result);
           handleJSON(currentSON);
         } catch(e) {
-          document.getElementById('loading').innerHTML = '<span class="warn">Bad JSON file...</span>';
+          document.getElementById('loading').innerHTML = '<span class="warn">'+e.message+'</span>';
         }
         document.body.className = '';
       }
@@ -120,7 +120,7 @@
 
   function handleJSON(json) {
     var options = {
-      decimals: parseInt(document.getElementById('decimals').value) || 7,
+      decimals: parseInt(document.getElementById('decimals').value),
       deleteNullProperties: document.getElementById('nonull').checked
     }
     var r = GeoJSONX.parse(json, options);
@@ -131,10 +131,18 @@
       document.getElementById('loading').innerHTML = '';
       var ul = document.getElementById('result');
       var li = document.createElement('LI');
+      var size1, size2;
+      if (size > 1024) {
+        size1 = '<span class="size">'+ (fileSize/1024).toFixed(2) +' Mo</span>'
+        size2 = '<span class="size">'+ (size/1024).toFixed(2) +' Mo</span>'
+      } else {
+        size1 = '<span class="size">'+ fileSize +' Ko</span>'
+        size2 = '<span class="size">'+ size +' Ko</span>'
+      }
       li.innerHTML = '<span class="name">'+fileName+'</span> '
-        + '<span class="size">'+ fileSize +' Ko</span>'
+        + size1
         + '<div class="gauge"><div></div></div>'
-        + '<span class="size">'+ size +' Ko</span>'
+        + size2
         + '<span class="percent">'+ Math.round((size-fileSize)/fileSize*100) +'%</span>'
         +'<button onclick="download('+(result.length-1)+')">Donwnload</button>';
       ul.appendChild(li);

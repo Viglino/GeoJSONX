@@ -60,25 +60,24 @@ GeoJSONX.prototype.getDecimals = function() {
 
 /** GeoSJON types */
 GeoJSONX.prototype._type = {
-  "Point": "p",
-  "LineString": "L",
-  "Polygon": "P",
-  "MultiPoint": "Mp",
-  "MultiLineString": "ML",
-  "MultiPolygon": "MP",
-  "GeometryCollection": "" // Not supported
+  "Point": 0,
+  "LineString": 1,
+  "Polygon": 2,
+  "MultiPoint": 3,
+  "MultiLineString": 4,
+  "MultiPolygon": 5,
+  "GeometryCollection": null // Not supported
 };
 
 /** GeoSJONX types */
-GeoJSONX.prototype._toType = {
-  "p": "Point",
-  "L": "LineString",
-  "P": "Polygon",
-  "Mp": "MultiPoint",
-  "ML": "MultiLineString",
-  "MP": "MultiPolygon",
-  "": "GeometryCollection" // Not supported
-};
+GeoJSONX.prototype._toType = [
+  "Point",
+  "LineString",
+  "Polygon",
+  "MultiPoint",
+  "MultiLineString",
+  "MultiPolygon"
+];
 
 /** Encode a number
  * @param {number} number Number to encode
@@ -208,15 +207,18 @@ GeoJSONX.prototype.decodeCoordinates = function(v, decimals) {
 GeoJSONX.prototype.fromGeoJSON = function (object, options) {
   this._count = 0;
   this._hash = {};
-  var geojson = { type: 'FeatureCollection' };
+  var geojson = {};
+  for (var key in object) {
+    if (key !== 'features') geojson[key] = object[key];
+  };
   var features = [];
   object.features.forEach(function(f) {
     features.push(this.writeFeatureObject(f));
   }.bind(this));
   geojson.decimals = this._decimals;
-  geojson.hashProperties = {};
+  geojson.hashProperties = [];
   Object.keys(this._hash).forEach(function(k) {
-    geojson.hashProperties[this._hash[k]] = k;
+    geojson.hashProperties.push(k);
   }.bind(this));
   geojson.features = features;
   this._count = 0;
@@ -236,12 +238,12 @@ GeoJSONX.prototype.writeFeatureObject = function(f0, options) {
   if (f0.type !== 'Feature') throw 'GeoJSONX doesn\'t support '+f0.type+'.';
   var f = [];
   // Encode geometry
-  if (f0.geometry.type==='GeometryCollection') {
-    throw 'GeoJSONX doesn\'t support '+f0.geometry.type+'.';
-  } 
   if (f0.geometry.type==='Point') {
     f.push(this.encodeCoordinates(f0.geometry.coordinates, this._decimals));
   } else {
+    if (!this._type[f0.geometry.type]) {
+      throw 'GeoJSONX doesn\'t support '+f0.geometry.type+'.';
+    }   
     f.push ([
       this._type[f0.geometry.type],
       this.encodeCoordinates(f0.geometry.coordinates, this._decimals)
@@ -250,20 +252,18 @@ GeoJSONX.prototype.writeFeatureObject = function(f0, options) {
   // Encode properties
   var k;
   var prop = [];
-  var keys = [];
   for (k in f0.properties) {
     if (!this._whiteList(k) || this._blackList(k)) continue;
-    if (!this._hash[k]) {
-      this._hash[k] = this._count.toString(32);
+    if (!this._hash.hasOwnProperty(k)) {
+      this._hash[k] = this._count;
       this._count++;
     }
     if (!this._deleteNull || this._deleteNull.indexOf(f0.properties[k])<0) {
-      prop.push (f0.properties[k]);
-      keys.push(this._hash[k]);
+      prop.push (this._hash[k], f0.properties[k]);
     }
   }
+  // Create prop table
   if (prop.length || this._extended) {
-    prop.unshift(keys.join(','));
     f.push(prop);
   }
   // Other properties (id, title, bbox, centerline...
@@ -289,10 +289,10 @@ GeoJSONX.prototype.writeFeatureObject = function(f0, options) {
  * @api
  */
 GeoJSONX.prototype.toGeoJSON = function (object, options) {
-  this._hashProperties = object.hashProperties || {};
+  this._hashProperties = object.hashProperties || [];
   options = options || {};
   options.decimals = parseInt(object.decimals);
-  if (!options.decimals) throw 'Bad file format...';
+  if (!options.decimals && options.decimals!==0) throw 'Bad file format...';
   // Result
   var geojson = {};
   for (var k in object) geojson[k] = object[k];
@@ -318,21 +318,21 @@ GeoJSONX.prototype.readFeatureFromObject = function (f0, options) {
   if (typeof(f0[0]) === 'string') {
     f.geometry = {
       type: 'Point',
-      coordinates: this.decodeCoordinates(f0[0], options.decimals || this.decimals)
+      coordinates: this.decodeCoordinates(f0[0], typeof(options.decimals) === 'number' ? options.decimals : this.decimals)
     }  
   } else {
     f.geometry = {
       type: this._toType[f0[0][0]],
-      coordinates: this.decodeCoordinates(f0[0][1], options.decimals || this.decimals)
+      coordinates: this.decodeCoordinates(f0[0][1], typeof(options.decimals) === 'number' ? options.decimals : this.decimals)
     }
   }
   if (this._hashProperties && f0[1]) {
     f.properties = {};
-    var keys;
-    f0[1].forEach(function(p, i) {
-      if (i===0) keys = p.split(',');
-      else f.properties[this._hashProperties[keys[i-1]]] = p;
-    }.bind(this));
+    f0[1];
+    var t = f0[1];
+    for (var i=0; i<t.length; i+=2) {
+      f.properties[this._hashProperties[t[i]]] = t[i+1];
+    }
   } else {
     f.properties = f0[1];
   }
@@ -354,14 +354,11 @@ GeoJSONX.prototype.readFeatureFromObject = function (f0, options) {
  */
 GeoJSONX.parse = function(json, options) {
   var parser = new GeoJSONX(options);
-  try {
-    if (json.features && json.features[0].geometry) {
-      return parser.fromGeoJSON(json);
-    } else {
-      return parser.toGeoJSON(json);
-    }
-  } catch(e) { /* error */ };
-  return false;
+  if (json.features && json.features[0].geometry) {
+    return parser.fromGeoJSON(json);
+  } else {
+    return parser.toGeoJSON(json);
+  }
 };
 
 return GeoJSONX

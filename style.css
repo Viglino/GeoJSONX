@@ -96,6 +96,12 @@ ul {
     display: none;
   }
 }
+@media screen and (max-width: 750px) {
+  #dropfile {
+    padding: 1em;
+  }
+}
+
 #result .percent {
   font-weight: bold;
   float: right;
