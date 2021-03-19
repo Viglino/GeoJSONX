@@ -107,22 +107,27 @@ ul {
   float: right;
   min-width: 3em;
   text-align: right;
+  color: #700;
+}
+#result .percent.gain {
+  color: #070;
 }
 #result .gauge {
   position: relative;
   display: inline-block;
   width: 20%;
   border: 1px solid #aaa;
+  background-color: #ddc;
   margin: 0 .5em;
+  vertical-align: middle;
 }
 #result .gauge > div {
-  display: inline-block;
+  display: block;
   height: 1em;
   max-width: 100%;
-  background-color: #ddc;
+  background-color: #775;
   width: 0;
   transition: 1s;
-  vertical-align: middle;
 }
 button {
   float: right;
@@ -138,6 +143,7 @@ button:before  {
   content: "\f019";
   font-family: FontAwesome;
   margin-right: .3em;
+  color: #fff;
 }
 
 #info {
@@ -148,6 +154,23 @@ button:before  {
   text-align: center;
   font-weight: normal;
 }
+
+/* Sur les écrans, quand la largeur de la fenêtre fait au maximum 1280px */
+@media screen and (max-width: 500px) {
+  #result button {
+    position: relative;
+    width: 3.5em;
+    color: transparent;
+    overflow: hidden;
+  }
+  #result button:before {
+    position: absolute;
+    margin: 0;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+}
+
 
 /* github corner */
 a.icss-github-corner,

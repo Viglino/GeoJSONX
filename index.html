@@ -139,14 +139,18 @@
         size1 = '<span class="size">'+ fileSize +' Ko</span>'
         size2 = '<span class="size">'+ size +' Ko</span>'
       }
+      var pc = Math.round((size-fileSize)/fileSize*100) || 0;
       li.innerHTML = '<span class="name">'+fileName+'</span> '
         + size1
         + '<div class="gauge"><div></div></div>'
         + size2
-        + '<span class="percent">'+ Math.round((size-fileSize)/fileSize*100) +'%</span>'
+        + '<span class="percent'+(pc<0 ? ' gain"':'"')+'>'+ (pc || '~') +'%</span>'
         +'<button onclick="download('+(result.length-1)+')">Donwnload</button>';
       ul.appendChild(li);
-      li.querySelector('.gauge div').style.width = 100+Math.round((size-fileSize)/fileSize*100)+'%';
+      li.querySelector('.gauge div').style.width = (pc>0 ? '0%' : '100%');
+      setTimeout(function() {
+        li.querySelector('.gauge div').style.width = (100+pc)+'%';
+      }, 300);
     } else {
       document.getElementById('loading').innerHTML = '<span class="warn">Error while parsing...</span>';
     }
