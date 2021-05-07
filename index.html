@@ -40,6 +40,11 @@
           <input id="nonull" type="checkbox" checked="checked" />
         </label>
       </li>
+      <li>
+        <label>Use 3D layout:
+          <input id="layout" type="checkbox" />
+        </label>
+      </li>
     </ul>
   
     <p>Result:</p>
@@ -121,7 +126,8 @@
   function handleJSON(json) {
     var options = {
       decimals: parseInt(document.getElementById('decimals').value),
-      deleteNullProperties: document.getElementById('nonull').checked
+      deleteNullProperties: document.getElementById('nonull').checked,
+      layout: document.getElementById('layout').checked ? 'XYZM' : 'XY'
     }
     var r = GeoJSONX.parse(json, options);
     if (r) {
