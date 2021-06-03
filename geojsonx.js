@@ -169,6 +169,8 @@ GeoJSONX.prototype.encodeCoordinates = function(v, decimal) {
       var hasZ = (this._layout[2]=='Z' && v[0].length > 2);
       var hasM = (this._layout[3]=='M' && v[0].length > 3);
       for (i=0; i<v.length; i++) {
+        // Last point
+        if (i===v.length-1) dxy = [0,0,0,0];
         tp = [
           Math.round( v[i][0] * Math.pow(10, decimal)),
           Math.round( v[i][1] * Math.pow(10, decimal))
@@ -208,12 +210,14 @@ GeoJSONX.prototype.encodeCoordinates = function(v, decimal) {
  * @api
  */
 GeoJSONX.prototype.decodeCoordinates = function(v, decimals) {
-  var i;
+  var i, p;
   if (typeof(v) === 'string') {
     v = v.split(';');
     if (v.length>1) {
       var dxy = [0,0,0,0];
       v.forEach(function(vi, i) {
+        // Last point
+        if (i===v.length-1) dxy = [0,0,0,0];
         v[i] = vi.split(',');
         v[i][0] = this.decodeNumber(v[i][0], decimals) + dxy[0];
         v[i][1] = this.decodeNumber(v[i][1], decimals) + dxy[1];
