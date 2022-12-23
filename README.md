@@ -6,7 +6,7 @@ Note that the encoding schema is not stable yet — it may still change as I get
 [GeoJSON](https://en.wikipedia.org/wiki/GeoJSON) is an open standard format designed for representing simple geographical features. It is widly supported by all major mapping libraries like [Leaflet](https://leafletjs.com/),  [OpenLayers](https://openlayers.org/) or [D3.js](https://d3js.org/).
 Any .geojson file in a GitHub repository are now [automatically rendered as an interactive, browsable map](https://github.blog/2013-06-13-there-s-a-map-for-that/), annotated with your geodata.
 
-GeoJSONh as many advantages: it is well supported, simple to understand and human readable, easy to parse and integrate as JSON data. 
+GeoJSON has many advantages: it is well supported, simple to understand and human readable, easy to parse and integrate as JSON data. 
 
 **But it is awfully inefficient for data storage and transfer.**
 
