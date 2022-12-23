@@ -10,7 +10,7 @@ GeoJSON has many advantages: it is well supported, simple to understand and huma
 
 **But it is awfully inefficient for data storage and transfer.**
 
-If you're Using large data sets, you know what I mean. GeoJSON is redundant (each keys are repeated on each features) and geometry are represented as a sequence of coordinates that may have up to 10-12 characters...
+If you're using large data sets, you know what I mean. GeoJSON is redundant (each keys are repeated on each features) and geometry are represented as a sequence of coordinates that may have up to 10-12 characters...
 Simple tricks may help to make GeoJSON files smaller, like removal of whitespaces and newlines, rounding and filtering coordinates or simplifying property keys. But there’s more we can do to achieve even better results.
 
 If you want to spare disk space, bandwidth and transfer time this is made for you.
