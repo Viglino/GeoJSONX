@@ -19,7 +19,7 @@ Binary format as [GeoBuff](https://github.com/mapbox/geobuf) or [MessagePack](ht
 
 ## Dealing with coordinates
 
-I first look at [Encoded Polyline Algorithm Format](https://developers.google.com/maps/documentation/utilities/polylinealgorithm) to encode the geometry but the precision limit to 5 digit (6 in better cases) onl gives you 10cm of precision.
+I first look at [Encoded Polyline Algorithm Format](https://developers.google.com/maps/documentation/utilities/polylinealgorithm) to encode the geometry but the precision limit to 5 digit (6 in better cases) only gives you 10 cm of precision.
 
 
 ## More to read
