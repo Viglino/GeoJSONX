@@ -159,8 +159,8 @@ GeoJSONX.prototype.encodeCoordinates = function(v, decimal) {
   var i, p, tp;
   if (typeof(v[0]) === 'number') {
     p = this.encodeNumber(v[0], decimal) +','+ this.encodeNumber(v[1], decimal);
-    if (this._layout[2]=='Z' && v.length > 2) p += ',' + this.encodeNumber(v[i][2], 2);
-    if (this._layout[3]=='M' && v.length > 3) p += ',' + this.encodeNumber(v[i][3], 0);
+    if (this._layout[2]=='Z' && v.length > 2) p += ',' + this.encodeNumber(v[2], 2);
+    if (this._layout[3]=='M' && v.length > 3) p += ',' + this.encodeNumber(v[3], 0);
     return p;
   } else if (v.length && v[0]) {
     if (typeof(v[0][0]) === 'number') {
