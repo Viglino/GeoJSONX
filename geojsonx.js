@@ -178,7 +178,8 @@ GeoJSONX.prototype.encodeCoordinates = function(v, decimal) {
         v[i] = tp;
         var dx = v[i][0]-dxy[0];
         var dy = v[i][1]-dxy[1];
-        if (i==0 || (dx!==0 || dy!==0)) {
+        // Prevent same coords
+        if (i == 0 || (dx !== 0 || dy !== 0) || v.length===2) {
           p = this.encodeNumber(dx, 0) +','
             + this.encodeNumber(dy, 0)
             + (hasZ ? ',' + this.encodeNumber(v[i][2] - dxy[2], 2) : '')
