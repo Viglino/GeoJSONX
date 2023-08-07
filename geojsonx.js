@@ -179,7 +179,7 @@ GeoJSONX.prototype.encodeCoordinates = function(v, decimal) {
         var dx = v[i][0]-dxy[0];
         var dy = v[i][1]-dxy[1];
         // Prevent same coords
-        if (i == 0 || (dx !== 0 || dy !== 0) || v.length===2) {
+        if (i == 0 || (dx !== 0 || dy !== 0)) {
           p = this.encodeNumber(dx, 0) +','
             + this.encodeNumber(dy, 0)
             + (hasZ ? ',' + this.encodeNumber(v[i][2] - dxy[2], 2) : '')
@@ -189,7 +189,11 @@ GeoJSONX.prototype.encodeCoordinates = function(v, decimal) {
         }
       }
       // Almost 2 points...
-      // if (xy.length<2) xy.push('A,A');
+      if (xy.length < 2 && v.length > 1) {
+        var p = 'A,A' + (hasZ ? ',A':'') + (hasM ? ',A':'');
+        xy.push(p);
+      }
+      // encoded
       return xy.join(';');
     } else {
       for (i=0; i<v.length; i++) {
