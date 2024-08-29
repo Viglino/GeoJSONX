@@ -19,11 +19,11 @@ Binary format as [GeoBuff](https://github.com/mapbox/geobuf) or [MessagePack](ht
 
 ## Dealing with coordinates
 
-I first look at [Encoded Polyline Algorithm Format](https://developers.google.com/maps/documentation/utilities/polylinealgorithm) to encode the geometry but the precision limit to 5 digit (6 in better cases) only gives you 10 cm of precision.
+I first looked at [Encoded Polyline Algorithm Format](https://developers.google.com/maps/documentation/utilities/polylinealgorithm) to encode the geometry but the precision limit to 5 digit (6 in better cases) only gives you 10 cm of precision.
 
 ### Removing unecessary digits
 
-Using 10 digits in a
+Using 10 digits for coordinates may quite unecessary  and reducing it should save space.
 
 ### Delta and zigzag encoding
 
@@ -31,11 +31,13 @@ Using [delta coordinates] (storing difference between coordinates) and [zigzag e
 
 ### Base64 encoding
 
-Encoding number using a more efficient method than just using 0-9 characters may also same a lot of space or even more if we use a more long radix.
+Encoding number using a more efficient method than just using 0-9 characters may also save a lot of space or even more if we use a more long radix.
 
 ## Dealing with properties
 
 Storing properties in a lookup table let's us use indexes in the file instead of long property keys.
+
+[Try it online !](https://viglino.github.io/GeoJSONX/)
 
 ## More to read
 * [Speed up web maps - minify geojson](http://igortihonov.com/2014/11/12/speedup-web-maps-minify-geojson/) - [by Igor Tihonov](https://github.com/igorti/geojson-minifier)
