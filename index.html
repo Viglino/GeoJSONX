@@ -23,6 +23,7 @@
 
   <h1>GeoJSONX</h1>
   <div id="dropfile">
+    <input type="file" />
     <i class="fa fa-download fa-3x"></i>
     <br/>
     Drop your GeoJSON / GeoJSONX file here!
@@ -58,14 +59,24 @@
         and visualizing geospatial data on the web.
       </p>
       <p>
-        But if is well supported by major mapping libraries like <a href="https://leafletjs.com/">Leaflet</a> 
-        or <a href="https://openlayers.org/">Openlayers</a> it is awfully inefficient when it comes 
-        to storing data.
+        But if is well supported by major mapping libraries like 
+        <a href="https://leafletjs.com/">Leaflet</a>,
+        <a href="https://openlayers.org/">Openlayers</a> 
+        or <a href="https://d3js.org/">D3.js</a>
+        it is awfully inefficient when it comes to storing and transferring data.
         <br/>
         Many technics can be find to minify GeoJSON, removing non-significant whitespace,
         reducing the number of decimals used for coordinates or simplifying property keys.
         <br/>
-        Such tehnics are l
+        But there's more we can do !
+      </p>
+      <p>
+        Binary format as <a href="https://github.com/mapbox/geobuf">GeoBuff</a> could be a good alternative, but GeoJSONX remains a text/json format you can easily extend and include in an other JSON structure (such as a map).
+      </p>
+      <p>
+        <a href="https://viglino.github.io/ol-ext/examples/misc/geojson2geojsonx.html" target="_new">
+          View result on a map !
+        </a>
       </p>
     </div>
   </div>
@@ -73,6 +84,27 @@
 <script>
   var fileName, fileSize, currentJSON;
   var result = [];
+
+  // Main function to upload
+  function uploadFile(file) {
+    document.getElementById('dropfile').className = '';
+    document.body.className = 'isloading';
+    document.getElementById('loading').innerHTML = 'loading...';
+    // load
+    fileName = file.name.replace(/\..+$/, '');
+    fileSize = Math.round(file.size/1024);
+    var reader = new FileReader();
+    reader.onload = function(event) {
+      try {
+        currentSON = JSON.parse(reader.result);
+        handleJSON(currentSON);
+      } catch(e) {
+        document.getElementById('loading').innerHTML = '<span class="warn">' + (e.message || e) + '</span>';
+      }
+      document.body.className = '';
+    }
+    reader.readAsText(file);
+  }
 
   /* Save file */
   function download(i) {
@@ -101,27 +133,15 @@
     e.stopPropagation();
 
     if (e.dataTransfer.files.length) {
-      document.getElementById('dropfile').className = '';
-      document.body.className = 'isloading';
-      document.getElementById('loading').innerHTML = 'loading...';
-      // Main function to upload
-      var file = e.dataTransfer.files[0];
-      fileName = file.name.replace(/\..+$/, '');
-      fileSize = Math.round(file.size/1024);
-      var reader = new FileReader();
-      reader.onload = function(event) {
-        try {
-          currentSON = JSON.parse(reader.result);
-          handleJSON(currentSON);
-        } catch(e) {
-          document.getElementById('loading').innerHTML = '<span class="warn">'+e.message+'</span>';
-        }
-        document.body.className = '';
-      }
-      reader.readAsText(file);
+      uploadFile(e.dataTransfer.files[0]);
     }
     return false;
   });
+
+  document.querySelector('#dropfile input').addEventListener('change', function(e) {
+    uploadFile(e.target.files[0])
+    e.target.value = ""
+  })
 
   function handleJSON(json) {
     var options = {

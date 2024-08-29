@@ -25,8 +25,22 @@ h1 {
   padding: .3em 1.5em;
   border: .2em solid #fff;
 }
+a[target] {
+  display: block;
+  margin: 1em auto;
+  background-color: #775;
+  border-radius: 1em;
+  color: #ddc;
+  padding: .3em 1.5em;
+  border: .2em solid currentColor;
+  width: fit-content;
+  font-weight: bold;
+  text-decoration: none;
+  font-size: 1.5em;
+}
 
 #dropfile	{
+  position: relative;
   font-size: 1.2em;
   width: Calc(50% - 2em); 
   border: 3px dashed #997; 
@@ -41,6 +55,12 @@ h1 {
 #dropfile.hover{
   border-color: #664;
   background: #e6e6d6;
+}
+#dropfile input[type="file"] {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  cursor: pointer;
 }
 
 #loading {

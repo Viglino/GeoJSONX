@@ -285,6 +285,7 @@ GeoJSONX.prototype.fromGeoJSON = function (object, options) {
 GeoJSONX.prototype.writeFeatureObject = function(f0, options) {
   // Only features supported yet
   if (f0.type !== 'Feature') throw 'GeoJSONX doesn\'t support '+f0.type+'.';
+  if (!f0.geometry) throw 'BAD GeoJSON format, feature with null geometry.';
   var f = [];
   // Encode geometry
   if (f0.geometry.type==='Point') {
