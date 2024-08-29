@@ -21,6 +21,21 @@ Binary format as [GeoBuff](https://github.com/mapbox/geobuf) or [MessagePack](ht
 
 I first look at [Encoded Polyline Algorithm Format](https://developers.google.com/maps/documentation/utilities/polylinealgorithm) to encode the geometry but the precision limit to 5 digit (6 in better cases) only gives you 10 cm of precision.
 
+### Removing unecessary digits
+
+Using 10 digits in a
+
+### Delta and zigzag encoding
+
+Using [delta coordinates] (storing difference between coordinates) and [zigzag encodeing](https://gist.github.com/mfuerstenau/ba870a29e16536fdbaba) let us spare space.
+
+### Base64 encoding
+
+Encoding number using a more efficient method than just using 0-9 characters may also same a lot of space or even more if we use a more long radix.
+
+## Dealing with properties
+
+Storing properties in a lookup table let's us use indexes in the file instead of long property keys.
 
 ## More to read
 * [Speed up web maps - minify geojson](http://igortihonov.com/2014/11/12/speedup-web-maps-minify-geojson/) - [by Igor Tihonov](https://github.com/igorti/geojson-minifier)
